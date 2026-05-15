@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "174601659060",
+    "project_id": "shuaibi-followup-system",
+    "storage_bucket": "shuaibi-followup-system.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174601659060:android:13ca9eb788e3b9ce19ade1",
+        "android_client_info": {
+          "package_name": "com.example.shuaibi_followup_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATvjdGE1shzA0yvLFZXalBL_sJ6kCPoRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
