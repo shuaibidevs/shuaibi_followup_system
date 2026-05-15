@@ -51,14 +51,12 @@ class _FollowupSheetsListState extends State<FollowupSheetsList> {
         final querySnapshot = result.data!;
         final docs = querySnapshot.docs;
 
-        if (_followupDataModelList.isEmpty) {}
         _followupDataModelList =
             docs.map((QueryDocumentSnapshot<WorksheetDataModel> doc) {
               try {
                 final data = doc.data();
                 return data;
               } catch (e) {
-                print('Error accessing document data: $e');
                 return WorksheetDataModel(
                   worksheetId: '',
                   worksheetTitle: 'no worksheet found',

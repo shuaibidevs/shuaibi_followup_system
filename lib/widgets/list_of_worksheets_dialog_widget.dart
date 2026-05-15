@@ -100,7 +100,6 @@ class _ListOfWorksheetsDialogWidgetState
 
   void _addWorksheet(WorksheetModel? worksheet) async {
     if (worksheet == null) {
-      print('No worksheet selected');
       return;
     }
     List<Map<String, dynamic>> worksheetData =

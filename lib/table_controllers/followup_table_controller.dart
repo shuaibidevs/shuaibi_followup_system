@@ -13,48 +13,22 @@ class FollowupTableController {
   final BuildContext context;
   final DatabaseService databaseService;
   final List<Map<String, dynamic>> dataList;
-  final List<String>? cols;
-  final List<Map<String, List<String>>>? filterMap;
+
   final String tableId;
 
   FollowupTableController({
     required this.context,
     required this.databaseService,
     required this.dataList,
-    this.cols,
-    this.filterMap,
+
     required this.tableId,
   });
 
   int get columnsCount => Consts.columns.length;
-  Map<String, List<String>> get _filter {
-    TableSettingsHelper tableSettingsHelper = TableSettingsHelper(
-      tableId: tableId,
-    );
-    Map<String, List<String>>? filter = Map<String, List<String>>.from(
-      tableSettingsHelper.read()['filter'] ?? {},
-    );
-    return filter;
-  }
 
   List<FollowupSheetModel> get _rows {
-    print(_filter);
     List<Map<String, dynamic>> list =
-        dataList
-        // .where((Map<String, dynamic> data) {
-        //   if (_filter.keys.isEmpty) {
-        //     return true;
-        //   }
-        //   for (final entry in _filter.entries) {
-        //     final key = entry.key;
-        //     final values = entry.value;
-        //     if (values.contains(data[key]?.toString()) || values.isEmpty) {
-        //       return true;
-        //     }
-        //   }
-        //   return false;
-        // })
-        .map((Map<String, dynamic> data) {
+        dataList.map((Map<String, dynamic> data) {
           return Map.fromEntries(
             data.entries.where((element) {
               return Consts.columns.contains(element.key);
@@ -66,25 +40,13 @@ class FollowupTableController {
     }).toList();
   }
 
-  List<DataColumn2> columns({required Function(String column) onColumnTap}) {
+  List<DataColumn2> columns() {
     List<DataColumn2> cols =
         Consts.columns
             .map(
               (column) => DataColumn2(
                 headingRowAlignment: MainAxisAlignment.center,
-                label: InkWell(
-                  onTap: () => onColumnTap(column),
-                  child: Text(
-                    column.toString().toUpperCase(),
-                    style: TextStyle(
-                      fontWeight:
-                          _filter.keys.contains(column) &&
-                                  _filter[column]!.isNotEmpty
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                    ),
-                  ),
-                ),
+                label: Text(column.toString().toUpperCase()),
               ),
             )
             .toList();
@@ -190,12 +152,5 @@ class FollowupTableController {
         column == Consts.columns.elementAt(9) ||
         column == Consts.columns.elementAt(10) ||
         column == Consts.columns.elementAt(11);
-  }
-
-  clearAllFilters() {
-    TableSettingsHelper tableSettingsHelper = TableSettingsHelper(
-      tableId: tableId,
-    );
-    tableSettingsHelper.clearSettings();
   }
 }

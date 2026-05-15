@@ -279,7 +279,6 @@ class _MaterialInfoCardDialogWidgetState
             if (mounted) Navigator.pop(context);
           } else {
             // CREATE SNACKBAR FEEDBACK
-            print('error: ${value.error}');
           }
         });
   }
@@ -308,7 +307,7 @@ class _MaterialInfoCardDialogWidgetState
         }
       });
     } else {
-      print('not pending: send update request');
+      // 'not pending: send update request'
     }
   }
 
@@ -324,11 +323,6 @@ class _MaterialInfoCardDialogWidgetState
         )
         .then((value) async {
           if (value.isSuccess) {
-            // String orderNumber =
-            //     (await value.data!.get()).data()?.orderNumber ?? "";
-            // String itemName = widget.mapKey;
-            // String brand = widget.map['brand'];
-            // String perfume = widget.map['perfume'];
             setState(() {
               _feedback = 'order request was sent successfully';
             });

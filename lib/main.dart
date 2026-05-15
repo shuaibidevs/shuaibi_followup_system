@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 
 import 'api/gsheets_api.dart';
 import 'firebase_options.dart';
@@ -11,8 +10,8 @@ import 'tools/data_builder.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  await Hive.openBox('table_settings');
+  // await Hive.initFlutter();
+  // await Hive.openBox('table_settings');
   await GsheetsApi.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
