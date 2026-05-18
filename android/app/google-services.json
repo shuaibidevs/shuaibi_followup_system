@@ -12,7 +12,12 @@
           "package_name": "com.example.shuaibi_followup_system"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "174601659060-5ct1nokskcesgihbet7ej02aerf5nefs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyATvjdGE1shzA0yvLFZXalBL_sJ6kCPoRs"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174601659060-5ct1nokskcesgihbet7ej02aerf5nefs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "174601659060-mvs5k3ns3u5bb76hfbescur9ef48s1ou.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shuaibiFollowupSystem"
+              }
+            }
+          ]
         }
       }
     }

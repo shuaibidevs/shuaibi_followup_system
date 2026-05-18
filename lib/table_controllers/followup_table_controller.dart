@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../models/followup_sheet_model.dart';
 import '../services/database_service.dart';
-import '../table_helpers/table_settings_helper.dart';
 import '../tools/consts.dart';
 import '../tools/dialogs.dart';
 import '../tools/screen_size.dart';
@@ -13,15 +12,15 @@ class FollowupTableController {
   final BuildContext context;
   final DatabaseService databaseService;
   final List<Map<String, dynamic>> dataList;
-
   final String tableId;
+  final String tableTitle;
 
   FollowupTableController({
     required this.context,
     required this.databaseService,
     required this.dataList,
-
     required this.tableId,
+    required this.tableTitle,
   });
 
   int get columnsCount => Consts.columns.length;
@@ -88,7 +87,9 @@ class FollowupTableController {
                 : () {
                   Dialogs.dialog(
                     context: context,
-                    title: column,
+                    title:
+                        "${data['brand']} ${data['perfume']} ($column)"
+                            .toUpperCase(),
                     content: _onCellTapDialogContent(data, column),
                   );
                 },
@@ -116,6 +117,8 @@ class FollowupTableController {
                   databaseService: databaseService,
                   map: data,
                   mapKey: column,
+                  tableId: tableId,
+                  tableTitle: tableTitle,
                 ),
               ),
             ],

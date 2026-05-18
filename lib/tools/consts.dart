@@ -13,4 +13,5 @@ class Consts {
     'box',
     'sticker',
   ];
+  static const String loginSession = 'login_session';
 }

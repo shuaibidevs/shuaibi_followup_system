@@ -12,11 +12,15 @@ class MaterialInfoCardDialogWidget extends StatefulWidget {
   final Map<String, dynamic> map;
   final String mapKey;
   final DatabaseService databaseService;
+  final String tableId;
+  final String tableTitle;
   const MaterialInfoCardDialogWidget({
     super.key,
     required this.map,
     required this.mapKey,
     required this.databaseService,
+    required this.tableTitle,
+    required this.tableId,
   });
 
   @override
@@ -66,6 +70,7 @@ class _MaterialInfoCardDialogWidgetState
                 description: 'Unavailable',
                 orderNumber: 'Unavailable',
                 itemName: 'Unavailable',
+                sheetId: 'Unavailable',
                 createdAt: Timestamp.now(),
                 updatedAt: Timestamp.now(),
               ),
@@ -157,7 +162,9 @@ class _MaterialInfoCardDialogWidgetState
                     ),
                     if (widget.map[widget.mapKey] != 'done')
                       TextButton(
-                        onPressed: _sendRequest,
+                        onPressed: () {
+                          _sendRequest(materialInfo);
+                        },
                         child: Text(
                           widget.map[widget.mapKey] == 'pending'
                               ? 'Send Order Request'
@@ -269,6 +276,7 @@ class _MaterialInfoCardDialogWidgetState
             description: _descriptionCtrl.text.trim(),
             orderNumber: widget.map['no'],
             itemName: widget.mapKey,
+            sheetId: widget.tableId,
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
           ),
@@ -283,12 +291,12 @@ class _MaterialInfoCardDialogWidgetState
         });
   }
 
-  _sendRequest() {
+  _sendRequest(MaterialInfoModel materialInfoModel) {
     if (widget.map[widget.mapKey] == 'pending') {
       widget.databaseService.readOrder().first.then((value) {
         QuerySnapshot<OrderModel>? data = value.data;
         if (data == null) {
-          _createOrder();
+          _createOrder(materialInfoModel);
         } else {
           bool exists = data.docs
               .map((query) => query.data())
@@ -298,7 +306,7 @@ class _MaterialInfoCardDialogWidgetState
                     order.orderNumber == widget.map['no'],
               );
           if (!exists) {
-            _createOrder();
+            _createOrder(materialInfoModel);
           } else {
             setState(() {
               _feedback = 'order already exists!';
@@ -311,12 +319,14 @@ class _MaterialInfoCardDialogWidgetState
     }
   }
 
-  _createOrder() {
+  _createOrder(MaterialInfoModel materialInfoModel) {
     widget.databaseService
         .createOrder(
           OrderModel(
             materialName: widget.mapKey,
             orderNumber: widget.map['no'],
+            sheetTitle: widget.tableTitle,
+            sheetId: widget.tableId,
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
           ),

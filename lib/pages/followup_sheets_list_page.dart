@@ -8,17 +8,17 @@ import '../tools/dialogs.dart';
 import '../tools/navigate.dart';
 import '../widgets/grid_builder.dart';
 import '../widgets/list_of_worksheets_dialog_widget.dart';
-import 'single_followup_sheet.dart';
+import 'single_followup_sheet_page.dart';
 
-class FollowupSheetsList extends StatefulWidget {
+class FollowupSheetsListPage extends StatefulWidget {
   final DatabaseService databaseService;
-  const FollowupSheetsList({super.key, required this.databaseService});
+  const FollowupSheetsListPage({super.key, required this.databaseService});
 
   @override
-  State<FollowupSheetsList> createState() => _FollowupSheetsListState();
+  State<FollowupSheetsListPage> createState() => _FollowupSheetsListPageState();
 }
 
-class _FollowupSheetsListState extends State<FollowupSheetsList> {
+class _FollowupSheetsListPageState extends State<FollowupSheetsListPage> {
   List<WorksheetDataModel> _followupDataModelList = [];
   Stream<DatabaseResult<QuerySnapshot<WorksheetDataModel>>>? _followupData;
   @override
@@ -81,7 +81,7 @@ class _FollowupSheetsListState extends State<FollowupSheetsList> {
           followupData: worksheetDataModel,
           onTap: () {
             Navigate(context).to(
-              page: SingleFollowupSheet(
+              page: SingleFollowupSheetPage(
                 worksheetDataModel: worksheetDataModel,
                 databaseService: widget.databaseService,
               ),

@@ -7,6 +7,7 @@ class MaterialInfoModel {
   final String description;
   final String orderNumber;
   final String itemName;
+  final String sheetId;
   final Timestamp createdAt;
   final Timestamp updatedAt;
 
@@ -17,6 +18,7 @@ class MaterialInfoModel {
     required this.description,
     required this.orderNumber,
     required this.itemName,
+    required this.sheetId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -27,6 +29,7 @@ class MaterialInfoModel {
     String? description,
     String? orderNumber,
     String? itemName,
+    String? sheetId,
     Timestamp? createdAt,
     Timestamp? updatedAt,
   }) {
@@ -37,6 +40,7 @@ class MaterialInfoModel {
       description: description ?? this.description,
       orderNumber: orderNumber ?? this.orderNumber,
       itemName: itemName ?? this.itemName,
+      sheetId: sheetId ?? this.sheetId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -50,6 +54,7 @@ class MaterialInfoModel {
       description: json['description'] ?? 'description',
       orderNumber: json['orderNumber'] ?? 'orderNumber',
       itemName: json['itemName'] ?? 'itemName',
+      sheetId: json['sheetId'] ?? 'sheetId',
       createdAt: json['createdAt'] ?? 'createdAt',
       updatedAt: json['updatedAt'] ?? 'updatedAt',
     );
@@ -62,6 +67,7 @@ class MaterialInfoModel {
     'description': description,
     'orderNumber': orderNumber,
     'itemName': itemName,
+    'sheetId': sheetId,
     'createdAt': createdAt,
     'updatedAt': updatedAt,
   };

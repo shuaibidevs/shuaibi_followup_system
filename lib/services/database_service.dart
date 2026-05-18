@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/allowed_user_model.dart';
 import '../models/material_info_model.dart';
 import '../models/order_model.dart';
 import '../models/worksheet_data_model.dart';
@@ -7,6 +8,7 @@ import '../models/worksheet_data_model.dart';
 const String followupDataCollection = 'followup_data';
 const String materialDataCollection = 'material_data';
 const String orderSCollection = 'orders';
+const String allowedUsersCollection = 'allowed_users';
 
 class DatabaseService {
   final _firestore = FirebaseFirestore.instance;
@@ -16,6 +18,8 @@ class DatabaseService {
   CollectionReference get _materialDataRef =>
       _firestore.collection(materialDataCollection);
   CollectionReference get _ordersRef => _firestore.collection(orderSCollection);
+  CollectionReference get _allowedUsersRef =>
+      _firestore.collection(allowedUsersCollection);
 
   //** FOLLOWUP DATA */
   // CREATE
@@ -205,6 +209,66 @@ class DatabaseService {
   Future<DatabaseResult<void>> deleteOrder(String docId) async {
     try {
       await _materialDataRef.doc(docId).delete();
+      return DatabaseResult.success(null);
+    } catch (e) {
+      return DatabaseResult.error(e.toString());
+    }
+  }
+
+  //** USER USERS */
+  // CREATE ALLOWED USER ACCOUNT
+  Future<DatabaseResult<DocumentReference<AllowedUserModel>>>
+  createAllowedUserAccount(AllowedUserModel allowedUser) async {
+    try {
+      final result = await _allowedUsersRef
+          .withConverter<AllowedUserModel>(
+            fromFirestore:
+                (snapshot, _) =>
+                    AllowedUserModel.fromJson(snapshot.data() ?? {}),
+            toFirestore: (data, _) => data.toJson(),
+          )
+          .add(allowedUser);
+      return DatabaseResult.success(result);
+    } catch (e) {
+      return DatabaseResult.error(e.toString());
+    }
+  }
+
+  // READ ALL ALLOWED USER ACCOUNT
+  Stream<DatabaseResult<QuerySnapshot<AllowedUserModel>>>
+  readAllowedUserAccount() {
+    try {
+      return _allowedUsersRef
+          .withConverter<AllowedUserModel>(
+            fromFirestore:
+                (snapshot, _) => AllowedUserModel.fromJson(snapshot.data()!),
+            toFirestore: (user, _) => user.toJson(),
+          )
+          .snapshots()
+          .map((snapshot) => DatabaseResult.success(snapshot));
+      // .handleError((error) => DatabaseResult.error(error.toString()));
+    } catch (e) {
+      return Stream.value(DatabaseResult.error(e.toString()));
+    }
+  }
+
+  // UPDATE
+  Future<DatabaseResult<void>> updateAllowedUserAccount(
+    AllowedUserModel order,
+    String docId,
+  ) async {
+    try {
+      await _allowedUsersRef.doc(docId).update(order.toJson());
+      return DatabaseResult.success(null);
+    } catch (e) {
+      return DatabaseResult.error(e.toString());
+    }
+  }
+
+  // DELETE
+  Future<DatabaseResult<void>> deleteAllowedUserAccount(String docId) async {
+    try {
+      await _allowedUsersRef.doc(docId).delete();
       return DatabaseResult.success(null);
     } catch (e) {
       return DatabaseResult.error(e.toString());

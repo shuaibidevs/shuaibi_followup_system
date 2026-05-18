@@ -11,13 +11,13 @@ import '../table_controllers/followup_table_controller.dart';
 class FollowupDataTableWidget extends StatefulWidget {
   final WorksheetDataModel worksheetDataModel;
   final DatabaseService databaseService;
-  final Function(WorksheetDataModel v) onSheetUpdated;
+  // final Function(WorksheetDataModel v) onSheetUpdated;
 
   const FollowupDataTableWidget({
     super.key,
     required this.worksheetDataModel,
     required this.databaseService,
-    required this.onSheetUpdated,
+    // required this.onSheetUpdated,
   });
 
   @override
@@ -35,7 +35,7 @@ class _FollowDataTableWidgetState extends State<FollowupDataTableWidget> {
       context: context,
       databaseService: widget.databaseService,
       dataList: widget.worksheetDataModel.worksheetData,
-
+      tableTitle: widget.worksheetDataModel.worksheetTitle,
       tableId: widget.worksheetDataModel.worksheetId,
     );
     super.initState();
@@ -115,7 +115,6 @@ class _FollowDataTableWidgetState extends State<FollowupDataTableWidget> {
       }
     }
     if (c != null) {
-      await GsheetsApi.valuesAsJsonList(c);
       WorksheetDataModel worksheetDataModel = widget.worksheetDataModel
           .copyWith(
             null,
@@ -134,10 +133,11 @@ class _FollowDataTableWidgetState extends State<FollowupDataTableWidget> {
               databaseService: widget.databaseService,
               dataList: worksheetDataModel.worksheetData,
 
+              tableTitle: worksheetDataModel.worksheetTitle,
               tableId: worksheetDataModel.worksheetId,
             );
           });
-          widget.onSheetUpdated(worksheetDataModel);
+          // widget.onSheetUpdated(worksheetDataModel);
         }
       });
     }
