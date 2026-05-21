@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import '../models/worksheet_data_model.dart';
 import '../models/worksheet_model.dart';
 import '../services/database_service.dart';
 import '../table_controllers/followup_table_controller.dart';
+import '../tools/data_builder.dart';
+import '../tools/datetime_to_statement.dart';
+import '../widgets/updated_at_widget.dart';
 
 class FollowupDataTableWidget extends StatefulWidget {
   final WorksheetDataModel worksheetDataModel;
@@ -28,9 +32,10 @@ double _minWidth(int length) => length * 150.0;
 
 class _FollowDataTableWidgetState extends State<FollowupDataTableWidget> {
   late FollowupTableController _followupTableController;
-
+  late DateTime _updatedAt;
   @override
   void initState() {
+    _updatedAt = widget.worksheetDataModel.updatedAt.toDate();
     _followupTableController = FollowupTableController(
       context: context,
       databaseService: widget.databaseService,
@@ -63,16 +68,43 @@ class _FollowDataTableWidgetState extends State<FollowupDataTableWidget> {
       header: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'last updated: ${_lastUpdatedTime()}',
-            style: TextStyle(fontSize: 14.0),
+          // Text(
+          //   'last updated: ${_lastUpdatedTime()}',
+          //   style: TextStyle(fontSize: 14.0),
+          // ),
+          // TextButton(onPressed: _updateSheet, child: Text('Update')),
+          // _timer(),
+          UpdatedAtWidget(
+            dateTime: _updatedAt,
+            onUpdate: () async {
+              await _updateSheet();
+            },
           ),
-          TextButton(onPressed: _updateSheet, child: Text('Update')),
         ],
       ),
     );
   }
 
+  // Widget _timer() {
+  //   return DataBuilder.streamBuilder(
+  //     stream: widget.databaseService.readFollowupData(),
+  //     builder: (cx, snapshot) {
+  //       WorksheetDataModel data =
+  //           snapshot.data!.data!.docs
+  //               .firstWhere(
+  //                 (element) =>
+  //                     element.id == widget.worksheetDataModel.worksheetId,
+  //               )
+  //               .data();
+  //       DateTime updatedAt = data.updatedAt.toDate();
+
+  //       return TextButton(
+  //         onPressed: _updateSheet,
+  //         child: UpdatedAtWidget(dateTime: updatedAt),
+  //       );
+  //     },
+  //   );
+  // }
   // void _filterMaker(BuildContext context) {
   //   List<Map<String, dynamic>> newDataList =
   //       _followupTableController.dataList.where((Map<String, dynamic> json) {
@@ -96,15 +128,11 @@ class _FollowDataTableWidgetState extends State<FollowupDataTableWidget> {
       return 'N/A';
     }
     DateTime lastUpdated = widget.worksheetDataModel.updatedAt.toDate();
-    String formattedDate =
-        '${lastUpdated.year}-${lastUpdated.month.toString().padLeft(2, '0')}-${lastUpdated.day.toString().padLeft(2, '0')}';
-    String formattedTime =
-        '${lastUpdated.hour.toString().padLeft(2, '0')}:${lastUpdated.minute.toString().padLeft(2, '0')}';
-    // String amPm = lastUpdated.hour >= 12 ? 'PM' : 'AM';
-    return '$formattedDate , $formattedTime';
+
+    return DatetimeToStatement.from(lastUpdated);
   }
 
-  _updateSheet() async {
+  Future _updateSheet() async {
     List<WorksheetModel> worksheetModelList =
         await GsheetsApi.listOfWorksheets();
     WorksheetModel? c;
@@ -136,6 +164,7 @@ class _FollowDataTableWidgetState extends State<FollowupDataTableWidget> {
               tableTitle: worksheetDataModel.worksheetTitle,
               tableId: worksheetDataModel.worksheetId,
             );
+            _updatedAt = worksheetDataModel.updatedAt.toDate();
           });
           // widget.onSheetUpdated(worksheetDataModel);
         }

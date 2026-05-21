@@ -5,6 +5,7 @@ class OrderModel {
   final String orderNumber;
   final String sheetTitle;
   final String sheetId;
+  final String? comments;
   final Timestamp createdAt;
   final Timestamp updatedAt;
 
@@ -13,6 +14,7 @@ class OrderModel {
     required this.orderNumber,
     required this.sheetTitle,
     required this.sheetId,
+    required this.comments,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -21,6 +23,7 @@ class OrderModel {
     String? orderNumber,
     String? sheetTitle,
     String? sheetId,
+    String? comments,
     Timestamp? createdAt,
     Timestamp? updatedAt,
   }) {
@@ -29,6 +32,7 @@ class OrderModel {
       orderNumber: orderNumber ?? this.orderNumber,
       sheetTitle: sheetTitle ?? this.sheetTitle,
       sheetId: sheetId ?? this.sheetId,
+      comments: comments ?? this.comments,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -40,6 +44,7 @@ class OrderModel {
       orderNumber: json['orderNumber'] ?? 'orderNumber',
       sheetTitle: json['sheetTitle'] ?? 'sheetTitle',
       sheetId: json['sheetId'] ?? 'sheetId',
+      comments: json['comments'] ?? 'comments',
       createdAt: json['createdAt'] ?? 'createdAt',
       updatedAt: json['updatedAt'] ?? 'updatedAt',
     );
@@ -50,6 +55,7 @@ class OrderModel {
     'orderNumber': orderNumber,
     'sheetTitle': sheetTitle,
     'sheetId': sheetId,
+    'comments': comments,
     'createdAt': createdAt,
     'updatedAt': updatedAt,
   };

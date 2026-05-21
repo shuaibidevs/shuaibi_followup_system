@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,6 +7,7 @@ import 'api/gsheets_api.dart';
 import 'firebase_options.dart';
 import 'helpers/login_session_helper.dart';
 import 'models/login_session_model.dart';
+import 'models/worksheet_data_model.dart';
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 import 'services/database_service.dart';
@@ -51,7 +53,17 @@ class MyApp extends StatelessWidget {
               LoginSessionHelper.readSession();
           if (loginSessionModel.loggedIn) {
             if (gsheetResult == null) {
-              return HomePage(databaseService: databaseService);
+              return DataBuilder.streamBuilder(
+                stream: databaseService.readFollowupData(),
+                builder: (context, snapshot) {
+                  QuerySnapshot<WorksheetDataModel>? data = snapshot.data!.data;
+
+                  return HomePage(
+                    databaseService: databaseService,
+                    worksheetData: data,
+                  );
+                },
+              );
             } else {
               return Scaffold(body: Center(child: Text(gsheetResult!)));
             }

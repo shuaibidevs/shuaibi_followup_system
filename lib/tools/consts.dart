@@ -13,5 +13,13 @@ class Consts {
     'box',
     'sticker',
   ];
+  static const List<String> roles = [
+    'accountant',
+    'designer',
+    'stock manager',
+    'production manager',
+    'purchaser',
+    'driver',
+  ];
   static const String loginSession = 'login_session';
 }

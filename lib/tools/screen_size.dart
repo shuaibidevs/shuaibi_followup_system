@@ -21,4 +21,16 @@ class ScreenSize {
     return ui.PlatformDispatcher.instance.views.first.physicalSize.height /
         ui.PlatformDispatcher.instance.views.first.devicePixelRatio;
   }
+
+  static bool get isMobile {
+    return width < 768;
+  }
+
+  static bool get isTablet {
+    return width >= 768 && width < 1200;
+  }
+
+  static bool get isDesktop {
+    return width >= 1200;
+  }
 }

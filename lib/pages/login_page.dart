@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shuaibi_followup_system/main.dart';
 
@@ -47,17 +50,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 _form(docs),
                 SizedBox(height: 20.0),
-                TextButton(
-                  onPressed: () async {
-                    Navigate(context).to(
-                      page: CreateAccountPage(
-                        databaseService: widget.databaseService,
-                        docs: docs,
-                      ),
-                    );
-                  },
-                  child: const Text('Create New Account'),
-                ),
+                Text('or contact admin for regestration'),
               ],
             ),
           );
@@ -73,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           _field(
             name: 'email',
+            textInputAction: TextInputAction.next,
             controller: _emailCtrl,
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -86,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           _field(
             name: 'password',
+            textInputAction: TextInputAction.go,
             controller: _passCtrl,
             obscureText: _passToggler,
             suffixIcon: IconButton(
@@ -126,14 +121,17 @@ class _LoginPageState extends State<LoginPage> {
     String? Function(String?)? validator,
     bool obscureText = false,
     Widget? suffixIcon,
+    TextInputAction? textInputAction,
   }) {
     BorderRadius radius = BorderRadius.circular(10.0);
+
     return Container(
-      width: ScreenSize.width * 0.15,
+      width: ScreenSize.width * (ScreenSize.isMobile ? 0.6 : 0.15),
 
       margin: EdgeInsets.all(10.0),
       child: TextFormField(
         controller: controller,
+        textInputAction: textInputAction,
         obscureText: obscureText,
         decoration: InputDecoration(
           hintText: name,
@@ -153,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       List<AllowedUserModel>? allowedUsers =
           docs?.map((e) => e.data()).toList();
-      AllowedUserModel? currentUSer = allowedUsers?.firstWhere(
+      AllowedUserModel? currentUser = allowedUsers?.firstWhere(
         (element) => element.email == email,
         orElse:
             () => AllowedUserModel(
@@ -164,14 +162,14 @@ class _LoginPageState extends State<LoginPage> {
               updatedAt: Timestamp.now(),
             ),
       );
-      if (currentUSer != null) {
-        String currentUSerEmail = currentUSer.email;
-        String currentUSerPassword = Encrypt.decode(currentUSer.password);
-        if (currentUSerEmail != email) {
+      if (currentUser?.email != 'null') {
+        String currentUserEmail = currentUser!.email;
+        String currentUserPassword = Encrypt.decode(currentUser.password);
+        if (currentUserEmail != email) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('account does not exist!')));
-        } else if (currentUSerPassword != password) {
+        } else if (currentUserPassword != password) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('wrong passowrd!')));
@@ -188,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('user == null')));
+        ).showSnackBar(SnackBar(content: Text('user not found!')));
       }
     }
   }

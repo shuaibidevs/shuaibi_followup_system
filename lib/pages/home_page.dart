@@ -1,16 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shuaibi_followup_system/helpers/login_session_helper.dart';
-import 'package:shuaibi_followup_system/main.dart';
-import 'package:shuaibi_followup_system/widgets/grid_builder.dart';
+// ONLY FOR FLUTTER WEB
+import 'package:web/web.dart' as web;
 
+import '../helpers/login_session_helper.dart';
+import '../main.dart';
+import '../models/worksheet_data_model.dart';
 import '../services/database_service.dart';
 import '../tools/navigate.dart';
+import '../widgets/grid_builder.dart';
+import '../widgets/pdf_viewer_widget.dart';
+import 'create_account_page.dart';
 import 'followup_sheets_list_page.dart';
 import 'orders_page.dart';
 
 class HomePage extends StatefulWidget {
   final DatabaseService databaseService;
-  const HomePage({super.key, required this.databaseService});
+  final QuerySnapshot<WorksheetDataModel>? worksheetData;
+  const HomePage({
+    super.key,
+    required this.databaseService,
+    required this.worksheetData,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -36,22 +47,57 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> _list() => [
     _buildCard(
+      title: 'Register new account',
+      onTap: () {
+        Navigate(context).to(
+          page: CreateAccountPage(
+            databaseService: widget.databaseService,
+            // worksheetData: widget.worksheetData,
+          ),
+        );
+      },
+    ),
+    _buildCard(
       title: 'FollowUp Sheets',
       onTap: () {
         Navigate(context).to(
-          page: FollowupSheetsListPage(databaseService: widget.databaseService),
+          page: FollowupSheetsListPage(
+            databaseService: widget.databaseService,
+            worksheetData: widget.worksheetData,
+          ),
         );
       },
     ),
     _buildCard(
       title: 'View Orders',
       onTap: () {
-        Navigate(
-          context,
-        ).to(page: OrdersPage(databaseService: widget.databaseService));
+        Navigate(context).to(
+          page: OrdersPage(
+            databaseService: widget.databaseService,
+            worksheetData: widget.worksheetData,
+          ),
+        );
+      },
+    ),
+    _buildCard(
+      title: 'PDF VIEWR (TEST PAGE)',
+      onTap: () {
+        // Navigate(context).to(
+        //   page: PdfViewerWidget(
+        //     pdfUrl:
+        //         'https://alshuaibiperfumesuea-my.sharepoint.com/:b:/g/personal/user1_alshuaibiperfumesuea_onmicrosoft_com/IQDr77eqebVNQ7ziMBcNtDorAXWJomjNdnaeey_48f_FBQU?e=NzenjI',
+        //   ),
+        // );
+        openPdf(
+          'https://alshuaibiperfumesuea-my.sharepoint.com/:b:/g/personal/user1_alshuaibiperfumesuea_onmicrosoft_com/IQDr77eqebVNQ7ziMBcNtDorAXWJomjNdnaeey_48f_FBQU?e=NzenjI',
+        );
       },
     ),
   ];
+  void openPdf(String pdfUrl) {
+    web.window.open(pdfUrl, '_blank');
+  }
+
   Widget _buildCard({required String title, required VoidCallback? onTap}) {
     BorderRadius borderRadius = BorderRadius.circular(10);
     return Card(
@@ -59,7 +105,7 @@ class _HomePageState extends State<HomePage> {
       child: InkWell(
         borderRadius: borderRadius,
         onTap: onTap,
-        child: Center(child: Text(title)),
+        child: Center(child: Text(title, textAlign: TextAlign.center)),
       ),
     );
   }

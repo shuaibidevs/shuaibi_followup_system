@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"dart":{"lib/firebase_options.dart":{"projectId":"shuaibi-followup-system","configurations":{"android":"1:174601659060:android:13ca9eb788e3b9ce19ade1","ios":"1:174601659060:ios:626299f8a724807819ade1","macos":"1:174601659060:ios:626299f8a724807819ade1","web":"1:174601659060:web:c7eb2199749604c419ade1","windows":"1:174601659060:web:86296415f2272c4e19ade1"}}},"android":{"default":{"projectId":"shuaibi-followup-system","appId":"1:174601659060:android:13ca9eb788e3b9ce19ade1","fileOutput":"android/app/google-services.json"}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "shuaibi-followup-system",
+          "configurations": {
+            "android": "1:174601659060:android:13ca9eb788e3b9ce19ade1",
+            "ios": "1:174601659060:ios:626299f8a724807819ade1",
+            "macos": "1:174601659060:ios:626299f8a724807819ade1",
+            "web": "1:174601659060:web:c7eb2199749604c419ade1",
+            "windows": "1:174601659060:web:86296415f2272c4e19ade1"
+          }
+        }
+      },
+      "android": {
+        "default": {
+          "projectId": "shuaibi-followup-system",
+          "appId": "1:174601659060:android:13ca9eb788e3b9ce19ade1",
+          "fileOutput": "android/app/google-services.json"
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

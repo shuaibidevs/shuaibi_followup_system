@@ -103,25 +103,21 @@ class FollowupTableController {
   }
 
   Widget _onCellTapDialogContent(Map<String, dynamic> data, String column) {
+    double dialogSize = ScreenSize.width * .2;
     return SizedBox(
-      width: ScreenSize.width * .2,
-      // height: double.min,
+      width: dialogSize,
+      // height: dialogSize * .9,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            // mainAxisAlignment: MainAxisAlignment.S,
-            children: [
-              Expanded(
-                child: MaterialInfoCardDialogWidget(
-                  databaseService: databaseService,
-                  map: data,
-                  mapKey: column,
-                  tableId: tableId,
-                  tableTitle: tableTitle,
-                ),
-              ),
-            ],
+          Flexible(
+            child: MaterialInfoCardDialogWidget(
+              databaseService: databaseService,
+              map: data,
+              mapKey: column,
+              tableId: tableId,
+              tableTitle: tableTitle,
+            ),
           ),
         ],
       ),

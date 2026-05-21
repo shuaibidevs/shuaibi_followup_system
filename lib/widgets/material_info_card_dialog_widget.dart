@@ -28,16 +28,19 @@ class MaterialInfoCardDialogWidget extends StatefulWidget {
       _MaterialInfoCardDialogWidgetState();
 }
 
-final TextEditingController _codeCtrl = TextEditingController();
-final TextEditingController _supplierCtrl = TextEditingController();
-final TextEditingController _descriptionCtrl = TextEditingController();
 String _feedback = '';
+bool _showExtraCard = false;
 
 class _MaterialInfoCardDialogWidgetState
     extends State<MaterialInfoCardDialogWidget> {
+  final TextEditingController _codeCtrl = TextEditingController();
+  final TextEditingController _supplierCtrl = TextEditingController();
+  final TextEditingController _descriptionCtrl = TextEditingController();
+  final TextEditingController _commentCtrl = TextEditingController();
   Stream<DatabaseResult<QuerySnapshot<MaterialInfoModel>>>? _stream;
   bool _editEnabled = false;
   bool _canApply = false;
+  int _page = 0;
   @override
   void initState() {
     _stream = widget.databaseService.readMaterialData();
@@ -77,6 +80,53 @@ class _MaterialInfoCardDialogWidgetState
         );
 
         return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _page0(materialInfo),
+            _page1(materialInfo),
+            Text(_feedback),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _page1(MaterialInfoModel materialInfo) {
+    return _page != 1
+        ? SizedBox.shrink()
+        : Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(child: Card(child: _btf(_commentCtrl))),
+            Flexible(
+              child: Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        // _commentCtrl.clear();
+                        _page = 0;
+                      });
+                    },
+                    child: Text('CANCEL'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _sendRequest(materialInfo);
+                    },
+                    child: Text('SEND'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+  }
+
+  Widget _page0(MaterialInfoModel materialInfo) {
+    return _page != 0
+        ? SizedBox.shrink()
+        : Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Card(
@@ -160,10 +210,19 @@ class _MaterialInfoCardDialogWidgetState
                         ),
                       ],
                     ),
+                    if (widget.map[widget.mapKey] != 'done') _extraCard(),
                     if (widget.map[widget.mapKey] != 'done')
                       TextButton(
                         onPressed: () {
-                          _sendRequest(materialInfo);
+                          if (widget.map[widget.mapKey] == 'pending') {
+                            setState(() {
+                              _page = 1;
+                            });
+                          }
+                          // setState(() {
+                          //   _showExtraCard = !_showExtraCard;
+                          // });
+                          // _sendRequest(materialInfo);
                         },
                         child: Text(
                           widget.map[widget.mapKey] == 'pending'
@@ -176,11 +235,8 @@ class _MaterialInfoCardDialogWidgetState
               ),
             ),
             _actions(),
-            Text(_feedback),
           ],
         );
-      },
-    );
   }
 
   Widget _tf(String value, TextEditingController? controller) {
@@ -209,6 +265,37 @@ class _MaterialInfoCardDialogWidgetState
       ),
       style: TextStyle(fontSize: 14.0),
       maxLines: null,
+    );
+  }
+
+  Widget _btf(TextEditingController? controller) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: TextField(
+        controller: controller,
+        onChanged: (String value) {
+          if (value.trim().isNotEmpty && !_canApply) {
+            setState(() {
+              _canApply = true;
+            });
+          } else if (_codeCtrl.text.trim().isEmpty &&
+              _supplierCtrl.text.trim().isEmpty &&
+              _descriptionCtrl.text.trim().isEmpty) {
+            setState(() {
+              _canApply = false;
+            });
+          }
+        },
+        decoration: InputDecoration(
+          hintText: 'Write comments',
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.zero,
+          isDense: true,
+          // hintStyle: TextStyle(color: Colors.black),
+        ),
+        style: TextStyle(fontSize: 14.0),
+        maxLines: 10,
+      ),
     );
   }
 
@@ -327,6 +414,7 @@ class _MaterialInfoCardDialogWidgetState
             orderNumber: widget.map['no'],
             sheetTitle: widget.tableTitle,
             sheetId: widget.tableId,
+            comments: _commentCtrl.text.trim(),
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
           ),
@@ -349,5 +437,11 @@ class _MaterialInfoCardDialogWidgetState
     _supplierCtrl.clear();
     _descriptionCtrl.clear();
     _feedback = '';
+  }
+
+  _extraCard() {
+    return _showExtraCard
+        ? Card(child: Center(child: Text('extra card')))
+        : SizedBox.shrink();
   }
 }

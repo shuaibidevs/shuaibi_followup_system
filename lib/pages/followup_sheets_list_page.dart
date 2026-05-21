@@ -12,7 +12,12 @@ import 'single_followup_sheet_page.dart';
 
 class FollowupSheetsListPage extends StatefulWidget {
   final DatabaseService databaseService;
-  const FollowupSheetsListPage({super.key, required this.databaseService});
+  final QuerySnapshot<WorksheetDataModel>? worksheetData;
+  const FollowupSheetsListPage({
+    super.key,
+    required this.databaseService,
+    required this.worksheetData,
+  });
 
   @override
   State<FollowupSheetsListPage> createState() => _FollowupSheetsListPageState();
