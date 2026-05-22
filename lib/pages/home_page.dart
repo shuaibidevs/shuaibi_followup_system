@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shuaibi_followup_system/services/auth_service.dart';
 // ONLY FOR FLUTTER WEB
 import 'package:web/web.dart' as web;
 
-import '../helpers/login_session_helper.dart';
-import '../main.dart';
 import '../models/worksheet_data_model.dart';
 import '../services/database_service.dart';
 import '../tools/navigate.dart';
 import '../widgets/grid_builder.dart';
-import '../widgets/pdf_viewer_widget.dart';
-import 'create_account_page.dart';
 import 'followup_sheets_list_page.dart';
 import 'orders_page.dart';
 
@@ -46,17 +43,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _list() => [
-    _buildCard(
-      title: 'Register new account',
-      onTap: () {
-        Navigate(context).to(
-          page: CreateAccountPage(
-            databaseService: widget.databaseService,
-            // worksheetData: widget.worksheetData,
-          ),
-        );
-      },
-    ),
     _buildCard(
       title: 'FollowUp Sheets',
       onTap: () {
@@ -110,19 +96,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _logout() async {
-    bool sessionUpdated = await LoginSessionHelper.updateSession(
-      loggedIn: false,
-      updatedAt: DateTime.now().toString(),
-    );
-    if (sessionUpdated) {
-      if (mounted) {
-        Navigate(context).to(page: MyApp());
-        // Navigate(context).back();
-      }
-    } else {
-      print('failed to update the session!');
-    }
-    // Navigator.pop(context);
+  _logout() {
+    AuthService().logout();
   }
 }

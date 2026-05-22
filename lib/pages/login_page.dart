@@ -1,18 +1,11 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shuaibi_followup_system/main.dart';
 
-import '../helpers/login_session_helper.dart';
 import '../models/allowed_user_model.dart';
 import '../services/database_service.dart';
 import '../tools/data_builder.dart';
 import '../tools/encrypt.dart';
-import '../tools/navigate.dart';
 import '../tools/screen_size.dart';
-import 'create_account_page.dart';
 
 class LoginPage extends StatefulWidget {
   final DatabaseService databaseService;
@@ -173,16 +166,7 @@ class _LoginPageState extends State<LoginPage> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('wrong passowrd!')));
-        } else {
-          bool updated = await LoginSessionHelper.updateSession(
-            loggedIn: true,
-            updatedAt: DateTime.now().toString(),
-          );
-
-          if (updated) {
-            if (mounted) Navigate(context).to(page: MyApp());
-          }
-        }
+        } else {}
       } else {
         ScaffoldMessenger.of(
           context,

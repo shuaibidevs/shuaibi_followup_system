@@ -55,6 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '174601659060',
     projectId: 'shuaibi-followup-system',
     storageBucket: 'shuaibi-followup-system.firebasestorage.app',
+    iosClientId: '174601659060-mvs5k3ns3u5bb76hfbescur9ef48s1ou.apps.googleusercontent.com',
     iosBundleId: 'com.example.shuaibiFollowupSystem',
   );
 
@@ -64,6 +65,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '174601659060',
     projectId: 'shuaibi-followup-system',
     storageBucket: 'shuaibi-followup-system.firebasestorage.app',
+    iosClientId: '174601659060-mvs5k3ns3u5bb76hfbescur9ef48s1ou.apps.googleusercontent.com',
     iosBundleId: 'com.example.shuaibiFollowupSystem',
   );
 

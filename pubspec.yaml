@@ -42,8 +42,8 @@ dependencies:
   data_table_2: ^2.7.2
   flutter_svg: ^2.2.2
   hive_flutter: ^1.1.0
-  syncfusion_flutter_pdfviewer: ^31.1.19
   web: ^1.1.1
+  firebase_auth: ^6.5.1
   
 
 dev_dependencies:
