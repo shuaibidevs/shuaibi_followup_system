@@ -22,8 +22,8 @@ class _Login2PageState extends State<Login2Page> {
     });
 
     final error = await _authService.login(
-      _emailController.text,
-      _passwordController.text,
+      _emailController.text.trim().toString().toLowerCase(),
+      _passwordController.text.trim().toString(),
     );
 
     setState(() {

@@ -45,7 +45,8 @@ class DefaultFirebaseOptions {
     appId: '1:174601659060:web:c7eb2199749604c419ade1',
     messagingSenderId: '174601659060',
     projectId: 'shuaibi-followup-system',
-    authDomain: 'shuaibi-followup-system.firebaseapp.com',
+    authDomain:
+        'shuaibi-followup-system.web.app', //'shuaibi-followup-system.firebaseapp.com',
     storageBucket: 'shuaibi-followup-system.firebasestorage.app',
   );
 
@@ -55,7 +56,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '174601659060',
     projectId: 'shuaibi-followup-system',
     storageBucket: 'shuaibi-followup-system.firebasestorage.app',
-    iosClientId: '174601659060-mvs5k3ns3u5bb76hfbescur9ef48s1ou.apps.googleusercontent.com',
+    iosClientId:
+        '174601659060-mvs5k3ns3u5bb76hfbescur9ef48s1ou.apps.googleusercontent.com',
     iosBundleId: 'com.example.shuaibiFollowupSystem',
   );
 
@@ -65,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '174601659060',
     projectId: 'shuaibi-followup-system',
     storageBucket: 'shuaibi-followup-system.firebasestorage.app',
-    iosClientId: '174601659060-mvs5k3ns3u5bb76hfbescur9ef48s1ou.apps.googleusercontent.com',
+    iosClientId:
+        '174601659060-mvs5k3ns3u5bb76hfbescur9ef48s1ou.apps.googleusercontent.com',
     iosBundleId: 'com.example.shuaibiFollowupSystem',
   );
 
@@ -85,5 +88,4 @@ class DefaultFirebaseOptions {
     authDomain: 'shuaibi-followup-system.firebaseapp.com',
     storageBucket: 'shuaibi-followup-system.firebasestorage.app',
   );
-
 }
